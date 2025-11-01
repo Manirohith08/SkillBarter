@@ -1,0 +1,11 @@
+# Node
+node_modules/
+.env
+
+# Backend and Frontend environments
+Backend/.env
+Frontend/.env
+
+# Logs
+*.log
+    
