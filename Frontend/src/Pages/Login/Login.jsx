@@ -8,12 +8,13 @@ const Login = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
 
-  const handleGoogleLogin = () => {
-    setIsClicked(true);
-    setTimeout(() => {
-      window.location.href = "http://localhost:8000/auth/google";
-    }, 300);
-  };
+ const handleGoogleLogin = () => {
+  setIsClicked(true);
+  setTimeout(() => {
+    window.location.href = "https://skillbarter-backend-i3h7.onrender.com/auth/google";
+  }, 300);
+};
+
 
   // Skill Energy Color Palette
   const colors = {
