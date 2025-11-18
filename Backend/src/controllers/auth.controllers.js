@@ -15,7 +15,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL, // FIXED
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,  
     },
     async (accessToken, refreshToken, profile, done) => {
       done(null, profile);
@@ -30,7 +30,7 @@ export const googleAuthHandler = passport.authenticate("google", {
 
 // ================= GOOGLE AUTH CALLBACK ================= //
 export const googleAuthCallback = passport.authenticate("google", {
-  failureRedirect: "https://skill-barter-two.vercel.app/login", // FIXED
+  failureRedirect: "https://skill-barter-two.vercel.app/login",
   session: false,
 });
 
@@ -51,10 +51,11 @@ export const handleGoogleLoginCallback = asyncHandler(async (req, res) => {
     res.cookie("accessToken", jwtToken, {
       httpOnly: true,
       expires: expiryDate,
-      secure: true, // Important for production HTTPS
+      secure: true,   // HTTPS REQUIRED
+      sameSite: "none", // ⭐ REQUIRED FOR CROSS DOMAIN COOKIE
     });
 
-    return res.redirect("https://skill-barter-two.vercel.app/discover"); // FIXED
+    return res.redirect("https://skill-barter-two.vercel.app/discover");
   }
 
   let unregisteredUser = await UnRegisteredUser.findOne({ email });
@@ -69,15 +70,16 @@ export const handleGoogleLoginCallback = asyncHandler(async (req, res) => {
   }
 
   const jwtToken = generateJWTToken_email(unregisteredUser);
-  const expiryDate = new Date(Date.now() + 0.5 * 60 * 60 * 1000);
+  const expiryDate = new Date(Date.now() + 30 * 60 * 1000);
 
   res.cookie("accessTokenRegistration", jwtToken, {
     httpOnly: true,
     expires: expiryDate,
     secure: true,
+    sameSite: "none",  // ⭐ REQUIRED
   });
 
-  return res.redirect("https://skill-barter-two.vercel.app/register"); // FIXED
+  return res.redirect("https://skill-barter-two.vercel.app/register");
 });
 
 // ================= USER LOGOUT ================= //
